@@ -7,7 +7,7 @@ import geocodeRouter from "./routes/geocode.routes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use("/api/geocode", geocodeRouter);
 app.get("/health", (req, res) => res.json({ ok: true }));

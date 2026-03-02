@@ -1,7 +1,19 @@
 # Meteo App — Full Stack (React + Node/Express)
 
 Meteo App completa da portfolio: ricerca meteo per città tramite geocoding, meteo corrente e gestione preferiti (persistenza in localStorage).
-Il backend (Node/Express) funge da proxy verso le API esterne ed è pronto per feature “da produzione” come cache, rate limit e (se vuoi) gestione API key.
+Il backend (Node/Express) funge da proxy verso le API esterne ed è pronto per feature “da produzione” come cache, rate limit e  gestione API key.
+
+---
+
+## 🔗 Demo (Live)
+
+- **Frontend (Vercel):** https://meteo-app-ebon.vercel.app
+- **Backend (Render):** https://meteoapp-t1q5.onrender.com
+
+Test rapidi backend:
+- https://meteoapp-t1q5.onrender.com/health
+- https://meteoapp-t1q5.onrender.com/api/geocode?city=Roma
+- https://meteoapp-t1q5.onrender.com/api/weather?lat=41.9028&lon=12.4964
 
 ---
 
@@ -158,6 +170,6 @@ Esempio risposta (struttura, semplificata):
 
 ## 👩‍💻 Autore
 
-- Nome: (il tuo nome)
-- Portfolio: (link al portfolio)
-- Repo: (link GitHub)
+- Nome: (Eleonora Troiani)
+- Portfolio: (https://www.eleonoratroiani.dev)
+- Repo: (https://github.com/majoralpaca984/meteoApp/tree/main)
