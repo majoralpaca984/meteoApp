@@ -153,9 +153,6 @@ Esempio risposta (struttura, semplificata):
 
 ## 📸 Screenshots
 
-Aggiungi qui 2 screenshot (consigliato per portfolio):
-- Home con ricerca + risultato meteo
-- Preferiti con almeno 2 città
 
 ---
 
