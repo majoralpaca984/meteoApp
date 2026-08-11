@@ -1,75 +1,88 @@
-# Meteo App — Full Stack (React + Node/Express)
+# Meteora — Full Stack Weather Dashboard
 
-Meteo App completa da portfolio: ricerca meteo per città tramite geocoding, meteo corrente e gestione preferiti (persistenza in localStorage).
-Il backend (Node/Express) funge da proxy verso le API esterne ed è pronto per feature “da produzione” come cache, rate limit e  gestione API key.
+Meteora è una dashboard meteo responsive sviluppata con React, Vite, Node.js ed Express. Mostra condizioni attuali, previsioni orarie e andamento dei prossimi sette giorni con un'interfaccia che cambia atmosfera in base al tempo e al momento della giornata.
 
----
+## Demo
 
-## 🔗 Demo (Live)
+- Frontend: https://meteo-app-ebon.vercel.app
+- Backend: https://meteoapp-t1q5.onrender.com
+- Health check: https://meteoapp-t1q5.onrender.com/health
 
-- **Frontend (Vercel):** https://meteo-app-ebon.vercel.app
-- **Backend (Render):** https://meteoapp-t1q5.onrender.com
+> I link pubblici mostrano l'ultima versione distribuita. Dopo aver pubblicato questo aggiornamento, Vercel e Render useranno il nuovo codice.
 
-Test rapidi backend:
-- https://meteoapp-t1q5.onrender.com/health
-- https://meteoapp-t1q5.onrender.com/api/geocode?city=Roma
-- https://meteoapp-t1q5.onrender.com/api/weather?lat=41.9028&lon=12.4964
+## Funzionalità
 
----
+- Ricerca meteo per città con geocoding in italiano
+- Utilizzo della posizione del dispositivo
+- Condizioni attuali e temperatura percepita
+- Previsioni delle prossime 12 ore
+- Previsioni dettagliate per 7 giorni
+- Umidità, vento e raffiche, pressione, visibilità, UV, alba e tramonto
+- Preferiti e ricerche recenti persistenti
+- Cache nel browser per risposte più rapide e meno richieste
+- Tema dinamico per sereno, notte, pioggia, neve, temporale e cielo coperto
+- Skeleton di caricamento, errori leggibili e pulsante di riprova
+- Layout accessibile e responsive per desktop, tablet e smartphone
 
-## ✨ Features
+## Affidabilità e prestazioni
 
-- Ricerca per **città**
-- **Geocoding** (città → lat/lon)
-- **Meteo corrente**: temperatura, vento, condizioni
-- Mapping `weather_code` → **descrizione leggibile + emoji**
-- **Preferiti** salvati in `localStorage`
-- Backend Express con endpoint dedicati (`/api/geocode`, `/api/weather`)
+La versione di produzione interroga Open-Meteo direttamente dal browser. Questo evita l'attesa del risveglio di un servizio Render gratuito e impedisce che un limite applicato agli IP condivisi di Render blocchi l'app.
 
----
+Il backend Express resta disponibile come modalità opzionale. Se viene abilitato e non risponde entro 3,5 secondi, il frontend passa automaticamente alla chiamata diretta.
 
-## 🧰 Tech Stack
+Il backend include inoltre:
 
-**Frontend**
-- React + Vite
+- cache in memoria;
+- timeout e un nuovo tentativo per errori temporanei;
+- validazione delle coordinate;
+- status HTTP più corretti;
+- log utili per capire gli errori dell'API esterna;
+- header di cache HTTP.
 
-**Backend**
-- Node.js + Express
-- cors, dotenv
-- nodemon (dev)
+## Stack
 
-**API**
-- Open-Meteo Forecast API
-- Open-Meteo Geocoding API
+### Frontend
 
----
+- React 19
+- Vite 7
+- CSS responsive senza framework UI
+- Local Storage e Session Storage
+- Geolocation API del browser
 
-## 📁 Struttura progetto
+### Backend
 
+- Node.js 20+
+- Express 5
+- CORS
+- Open-Meteo Forecast e Geocoding API
+
+## Struttura
+
+```text
+meteoApp/
+├── backend/
+│   ├── src/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── server.js
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── index.css
+│   └── package.json
+└── README.md
 ```
-meteo-app/
-  backend/
-    src/
-      server.js
-      routes/
-      services/
-    package.json
-  frontend/
-    src/
-      App.jsx
-      services/
-      utils/
-    package.json
-  README.md
-```
 
----
+## Avvio locale
 
-## ▶️ Avvio in locale
+Servono Node.js 20 o superiore e due terminali.
 
-Apri **due terminali** (uno per backend e uno per frontend).
-
-### 1) Backend
+### Backend
 
 ```bash
 cd backend
@@ -77,14 +90,9 @@ npm install
 npm run dev
 ```
 
-Backend: `http://localhost:3001`
+Il server parte su `http://localhost:3001`.
 
-Test rapidi:
-- `http://localhost:3001/health`
-- `http://localhost:3001/api/geocode?city=Roma`
-- `http://localhost:3001/api/weather?lat=41.9028&lon=12.4964`
-
-### 2) Frontend
+### Frontend
 
 ```bash
 cd frontend
@@ -92,84 +100,40 @@ npm install
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`
+Il frontend parte su `http://localhost:5173`.
 
----
+## Variabili del frontend
 
-## 🔌 API Endpoints (Backend)
+Il file `frontend/.env` contiene:
 
-### Health Check
-- `GET /health`
-
-Esempio risposta:
-```json
-{ "ok": true }
+```env
+VITE_API_BASE_URL=https://meteoapp-t1q5.onrender.com
+VITE_USE_BACKEND=false
 ```
 
-### Geocoding (città → coordinate)
-- `GET /api/geocode?city=Roma`
+- `VITE_USE_BACKEND=false`: modalità consigliata per la demo pubblica, più veloce e resistente ai limiti degli IP condivisi.
+- `VITE_USE_BACKEND=true`: prova prima il backend e passa automaticamente a Open-Meteo se il server non risponde.
 
-Esempio risposta (struttura):
-```json
-{
-  "found": true,
-  "results": [
-    {
-      "name": "Roma",
-      "country": "Italy",
-      "admin1": "Lazio",
-      "latitude": 41.8933,
-      "longitude": 12.4829
-    }
-  ]
-}
+## Endpoint backend
+
+```text
+GET /health
+GET /api/geocode?city=Roma
+GET /api/weather?lat=41.9028&lon=12.4964
 ```
 
-### Meteo (coordinate → meteo corrente)
-- `GET /api/weather?lat=41.9028&lon=12.4964`
+## Verifica prima del deploy
 
-Esempio risposta (struttura, semplificata):
-```json
-{
-  "current": {
-    "temperature_2m": 18.2,
-    "wind_speed_10m": 9.4,
-    "weather_code": 2
-  }
-}
+```bash
+cd frontend
+npm run lint
+npm run build
 ```
 
----
+Testare poi ricerca, geolocalizzazione, preferiti e resa mobile.
 
-## 🧪 Test veloce (checklist)
+## Crediti
 
-1. Cerca una città (es. Roma)
-2. Verifica che compaiano temperatura/vento/condizioni
-3. Aggiungi ai preferiti almeno 2 città
-4. Ricarica la pagina e verifica che i preferiti restino
-5. Clicca un preferito per ricaricare il meteo
+Dati meteorologici forniti da [Open-Meteo](https://open-meteo.com/) con licenza CC BY 4.0.
 
----
-
-## 🚀 Idee per miglioramenti (Roadmap)
-
-- Forecast 7 giorni (daily)
-- UI responsive + layout a cards
-- Dark/Light mode
-- Selezione unità (°C/°F)
-- Cache backend (in-memory) per ridurre chiamate
-- Rate limiting e gestione errori più dettagliata
-- Deploy: Frontend (Vercel/Netlify) + Backend (Render/Fly.io)
-
----
-
-## 📸 Screenshots
-
-
----
-
-## 👩‍💻 Autore
-
-- Nome: (Eleonora Troiani)
-- Portfolio: (https://www.eleonoratroiani.dev)
-- Repo: (https://github.com/majoralpaca984/meteoApp/tree/main)
+Progetto di Eleonora Troiani — https://www.eleonoratroiani.dev
