@@ -700,3 +700,65 @@ footer a { color: #9edff3; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+/* Correzione responsive: impedisce l'overflow orizzontale */
+html,
+body,
+#root,
+.app {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.container,
+.dashboard,
+.panel,
+.hourlyScroll,
+.forecastList,
+.forecastRow,
+.tempRange {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.hourlyScroll,
+.forecastList,
+.forecastRow {
+  width: 100%;
+}
+
+.tempRange {
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
+}
+
+@media (max-width: 600px) {
+  .hourlyPanel,
+  .forecastPanel,
+  .favoritesPanel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .hourlyScroll {
+    grid-auto-columns: minmax(72px, 24vw);
+  }
+
+  .forecastRow {
+    grid-template-columns: minmax(0, 1fr) 32px auto;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .forecastRow .tempRange {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 4px;
+  }
+
+  .forecastIcon {
+    font-size: 21px;
+  }
+}
